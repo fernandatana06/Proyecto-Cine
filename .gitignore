@@ -1,0 +1,26 @@
+# Dependencias
+**/node_modules/
+
+# Variables de entorno
+**/.env
+**/.env.*
+
+# Builds
+**/dist/
+
+# Base de datos SQLite local
+**/dev.db
+**/*.db-journal
+
+# Prisma Client generado
+backend/generated/
+
+# Archivos generados por herramientas/asistentes
+**/.agents/
+**/.claude/
+**/.windsurf/
+**/skills-lock.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

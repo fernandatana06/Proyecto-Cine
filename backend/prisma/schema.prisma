@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Pelicula {
+  id            Int      @id @default(autoincrement())
+  titulo        String
+  genero        String
+  duracion      Int
+  clasificacion String
+  imagenUrl     String?
+  estado        String   @default("ACTIVA")
+  createdAt     DateTime @default(now())
+
+  funciones Funcion[]
+}
+
+model Sala {
+  id        Int      @id @default(autoincrement())
+  nombre    String   @unique
+  capacidad Int
+  estado    String   @default("ACTIVA")
+  createdAt DateTime @default(now())
+
+  funciones Funcion[]
+}
+
+model Funcion {
+  id         Int      @id @default(autoincrement())
+  peliculaId Int
+  salaId     Int
+  fechaHora  DateTime
+  precio     Float
+  estado     String   @default("PROGRAMADA")
+  createdAt  DateTime @default(now())
+
+  pelicula Pelicula  @relation(fields: [peliculaId], references: [id])
+  sala     Sala      @relation(fields: [salaId], references: [id])
+  reservas Reserva[]
+
+  @@index([peliculaId])
+  @@index([salaId])
+  @@index([fechaHora])
+}
+
+model Cliente {
+  id     Int    @id @default(autoincrement())
+  nombre String
+  email  String @unique
+
+  reservas Reserva[]
+}
+
+model Reserva {
+  id        Int      @id @default(autoincrement())
+  clienteId Int
+  funcionId Int
+  cantidad  Int
+  total     Float
+  estado    String   @default("ACTIVA")
+  createdAt DateTime @default(now())
+
+  cliente Cliente @relation(fields: [clienteId], references: [id])
+  funcion Funcion @relation(fields: [funcionId], references: [id])
+
+  @@index([clienteId])
+  @@index([funcionId])
+}
