@@ -20,22 +20,51 @@ export async function obtenerFunciones() {
     return respuesta.json();
   }
 
-  export async function crearReserva(datosReserva) {
-    const respuesta = await fetch(`${API_URL}/reservas`, {
-      method: "POST",
+export async function crearReserva(datosReserva) {
+  const respuesta = await fetch(`${API_URL}/reservas`, {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify(datosReserva),
+  });
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.error || "No se pudo crear la reserva"
+    );
+  }
+
+  return datos;
+}
+
+export async function obtenerReservas() {
+    const respuesta = await fetch(`${API_URL}/reservas`);
   
-      headers: {
-        "Content-Type": "application/json",
-      },
+    if (!respuesta.ok) {
+      throw new Error("No se pudieron obtener las reservas");
+    }
   
-      body: JSON.stringify(datosReserva),
-    });
+    return respuesta.json();
+  }
+  
+  export async function cancelarReserva(id) {
+    const respuesta = await fetch(
+      `${API_URL}/reservas/${id}/cancelar`,
+      {
+        method: "PATCH",
+      }
+    );
   
     const datos = await respuesta.json();
   
     if (!respuesta.ok) {
       throw new Error(
-        datos.error || "No se pudo crear la reserva"
+        datos.error || "No se pudo cancelar la reserva"
       );
     }
   
