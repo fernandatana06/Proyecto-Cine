@@ -88,3 +88,64 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.panel-administracion {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid #ddd;
+}
+
+.administracion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.admin-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-card h3 {
+  margin-top: 0;
+}
+
+.admin-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: bold;
+}
+
+.admin-card input,
+.admin-card select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.admin-card button {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.admin-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+  .administracion-grid {
+    grid-template-columns: 1fr;
+  }
+}

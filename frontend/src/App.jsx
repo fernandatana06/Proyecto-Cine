@@ -5,11 +5,13 @@ import {
   obtenerFunciones,
   obtenerPeliculas,
   obtenerReservas,
+  obtenerSalas,
 } from "./services/api";
 
 import PeliculaCard from "./components/PeliculaCard";
 import ReservaForm from "./components/ReservaForm";
 import ReservasLista from "./components/ReservasLista";
+import PanelAdministracion from "./components/PanelAdministracion";
 
 import "./App.css";
 
@@ -19,24 +21,32 @@ function App() {
   // ==========================================
 
   const [peliculas, setPeliculas] = useState([]);
+  const [salas, setSalas] = useState([]);
   const [funciones, setFunciones] = useState([]);
   const [reservas, setReservas] = useState([]);
 
   const [funcionSeleccionada, setFuncionSeleccionada] =
     useState(null);
 
-  const [cancelandoId, setCancelandoId] = useState(null);
+  const [cancelandoId, setCancelandoId] =
+    useState(null);
 
   const [cargando, setCargando] = useState(true);
+
   const [error, setError] = useState("");
-  const [mensajeExito, setMensajeExito] = useState("");
+
+  const [mensajeExito, setMensajeExito] =
+    useState("");
 
   // ==========================================
   // ESTADOS DE LOS FILTROS
   // ==========================================
 
-  const [filtroPelicula, setFiltroPelicula] = useState("");
-  const [filtroFecha, setFiltroFecha] = useState("");
+  const [filtroPelicula, setFiltroPelicula] =
+    useState("");
+
+  const [filtroFecha, setFiltroFecha] =
+    useState("");
 
   // ==========================================
   // CARGAR DATOS
@@ -49,15 +59,18 @@ function App() {
 
       const [
         datosPeliculas,
+        datosSalas,
         datosFunciones,
         datosReservas,
       ] = await Promise.all([
         obtenerPeliculas(),
+        obtenerSalas(),
         obtenerFunciones(),
         obtenerReservas(),
       ]);
 
       setPeliculas(datosPeliculas);
+      setSalas(datosSalas);
       setFunciones(datosFunciones);
       setReservas(datosReservas);
     } catch (error) {
@@ -82,6 +95,7 @@ function App() {
   function manejarReservar(funcion) {
     setMensajeExito("");
     setError("");
+
     setFuncionSeleccionada(funcion);
   }
 
@@ -127,10 +141,12 @@ function App() {
 
       await cancelarReserva(id);
 
-      // Actualizamos:
-      // - historial de reservas
-      // - disponibilidad de entradas
-      // - cartelera
+      // Volvemos a cargar todo para actualizar:
+      // - reservas
+      // - entradas disponibles
+      // - películas
+      // - funciones
+      // - salas
       await cargarCartelera();
 
       setMensajeExito(
@@ -144,6 +160,14 @@ function App() {
   }
 
   // ==========================================
+  // ACTUALIZAR DATOS DESDE ADMINISTRACIÓN
+  // ==========================================
+
+  async function manejarDatosActualizados() {
+    await cargarCartelera();
+  }
+
+  // ==========================================
   // LIMPIAR FILTROS
   // ==========================================
 
@@ -153,7 +177,8 @@ function App() {
   }
 
   // ==========================================
-  // CONVERTIR FECHA A FORMATO LOCAL YYYY-MM-DD
+  // CONVERTIR FECHA A FORMATO LOCAL
+  // YYYY-MM-DD
   // ==========================================
 
   function obtenerFechaLocal(fechaHora) {
@@ -189,7 +214,8 @@ function App() {
   // ==========================================
 
   const peliculasActivas = peliculas.filter(
-    (pelicula) => pelicula.estado === "ACTIVA"
+    (pelicula) =>
+      pelicula.estado === "ACTIVA"
   );
 
   // ==========================================
@@ -198,19 +224,28 @@ function App() {
 
   const funcionesFiltradas = funciones.filter(
     (funcion) => {
-      // Solo mostramos funciones programadas
-      if (funcion.estado !== "PROGRAMADA") {
+      // --------------------------------------
+      // SOLO FUNCIONES PROGRAMADAS
+      // --------------------------------------
+
+      if (
+        funcion.estado !== "PROGRAMADA"
+      ) {
         return false;
       }
 
-      // Solo mostramos funciones futuras
-      const fechaFuncionCompleta = new Date(
-        funcion.fechaHora
-      );
+      // --------------------------------------
+      // SOLO FUNCIONES FUTURAS
+      // --------------------------------------
+
+      const fechaFuncionCompleta =
+        new Date(funcion.fechaHora);
 
       const ahora = new Date();
 
-      if (fechaFuncionCompleta <= ahora) {
+      if (
+        fechaFuncionCompleta <= ahora
+      ) {
         return false;
       }
 
@@ -220,7 +255,8 @@ function App() {
 
       if (
         filtroPelicula &&
-        funcion.peliculaId !== Number(filtroPelicula)
+        funcion.peliculaId !==
+          Number(filtroPelicula)
       ) {
         return false;
       }
@@ -230,11 +266,14 @@ function App() {
       // --------------------------------------
 
       if (filtroFecha) {
-        const fechaFuncion = obtenerFechaLocal(
-          funcion.fechaHora
-        );
+        const fechaFuncion =
+          obtenerFechaLocal(
+            funcion.fechaHora
+          );
 
-        if (fechaFuncion !== filtroFecha) {
+        if (
+          fechaFuncion !== filtroFecha
+        ) {
           return false;
         }
       }
@@ -247,28 +286,40 @@ function App() {
   // PELÍCULAS QUE DEBEN MOSTRARSE
   // ==========================================
 
-  const peliculasFiltradas = peliculasActivas.filter(
-    (pelicula) => {
-      // Si seleccionamos una película específica,
-      // ocultamos las demás.
+  const peliculasFiltradas =
+    peliculasActivas.filter(
+      (pelicula) => {
+        // Si el usuario seleccionó
+        // una película específica,
+        // ocultamos las demás.
 
-      if (
-        filtroPelicula &&
-        pelicula.id !== Number(filtroPelicula)
-      ) {
-        return false;
+        if (
+          filtroPelicula &&
+          pelicula.id !==
+            Number(filtroPelicula)
+        ) {
+          return false;
+        }
+
+        // Si hay un filtro por fecha,
+        // mostramos únicamente películas
+        // que tengan funciones ese día.
+
+        if (filtroFecha) {
+          return funcionesFiltradas.some(
+            (funcion) =>
+              funcion.peliculaId ===
+              pelicula.id
+          );
+        }
+
+        // Si no hay filtro por fecha,
+        // mostramos la película aunque todavía
+        // no tenga funciones futuras.
+
+        return true;
       }
-
-      // La película debe tener al menos una
-      // función disponible después de aplicar
-      // los filtros.
-
-      return funcionesFiltradas.some(
-        (funcion) =>
-          funcion.peliculaId === pelicula.id
-      );
-    }
-  );
+    );
 
   // ==========================================
   // INTERFAZ
@@ -284,13 +335,13 @@ function App() {
         <h1>Cartelera</h1>
 
         <p>
-          Consulta nuestras películas y funciones
-          disponibles.
+          Consulta nuestras películas y
+          funciones disponibles.
         </p>
       </header>
 
       {/* ======================================
-          MENSAJES
+          MENSAJES GENERALES
       ====================================== */}
 
       {error && (
@@ -359,7 +410,7 @@ function App() {
             />
           </label>
 
-          {/* BOTÓN LIMPIAR */}
+          {/* LIMPIAR FILTROS */}
 
           <button
             type="button"
@@ -383,9 +434,8 @@ function App() {
         <section className="peliculas-grid">
           {peliculasFiltradas.map(
             (pelicula) => {
-              // Obtenemos únicamente las
-              // funciones correspondientes
-              // a esta película.
+              // Obtenemos las funciones
+              // correspondientes a esta película.
 
               const funcionesPelicula =
                 funcionesFiltradas.filter(
@@ -421,7 +471,9 @@ function App() {
           onReservaCreada={
             manejarReservaCreada
           }
-          onCancelar={cerrarFormulario}
+          onCancelar={
+            cerrarFormulario
+          }
         />
       )}
 
@@ -434,7 +486,21 @@ function App() {
         onCancelar={
           manejarCancelarReserva
         }
-        cancelandoId={cancelandoId}
+        cancelandoId={
+          cancelandoId
+        }
+      />
+
+      {/* ======================================
+          PANEL DE ADMINISTRACIÓN
+      ====================================== */}
+
+      <PanelAdministracion
+        peliculas={peliculas}
+        salas={salas}
+        onDatosActualizados={
+          manejarDatosActualizados
+        }
       />
     </main>
   );

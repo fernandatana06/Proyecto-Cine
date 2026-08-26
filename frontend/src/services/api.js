@@ -70,3 +70,73 @@ export async function obtenerReservas() {
   
     return datos;
   }
+
+  export async function crearPelicula(datosPelicula) {
+    const respuesta = await fetch(`${API_URL}/peliculas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datosPelicula),
+    });
+  
+    const datos = await respuesta.json();
+  
+    if (!respuesta.ok) {
+      throw new Error(
+        datos.error || "No se pudo registrar la película"
+      );
+    }
+  
+    return datos;
+  }
+  
+  export async function crearSala(datosSala) {
+    const respuesta = await fetch(`${API_URL}/salas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datosSala),
+    });
+  
+    const datos = await respuesta.json();
+  
+    if (!respuesta.ok) {
+      throw new Error(
+        datos.error || "No se pudo registrar la sala"
+      );
+    }
+  
+    return datos;
+  }
+  
+  export async function crearFuncion(datosFuncion) {
+    const respuesta = await fetch(`${API_URL}/funciones`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datosFuncion),
+    });
+  
+    const datos = await respuesta.json();
+  
+    if (!respuesta.ok) {
+      throw new Error(
+        datos.error || "No se pudo programar la función"
+      );
+    }
+  
+    return datos;
+  }
+
+  export async function obtenerSalas() {
+    const respuesta = await fetch(`${API_URL}/salas`);
+  
+    if (!respuesta.ok) {
+      throw new Error("No se pudieron obtener las salas");
+    }
+  
+    return respuesta.json();
+  }
