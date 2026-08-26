@@ -14,31 +14,33 @@ import ReservasLista from "./components/ReservasLista";
 import "./App.css";
 
 function App() {
-  // -------------------------
+  // ==========================================
   // ESTADOS PRINCIPALES
-  // -------------------------
+  // ==========================================
 
   const [peliculas, setPeliculas] = useState([]);
   const [funciones, setFunciones] = useState([]);
   const [reservas, setReservas] = useState([]);
 
-  // Función seleccionada cuando el usuario pulsa "Reservar"
   const [funcionSeleccionada, setFuncionSeleccionada] =
     useState(null);
 
-  // ID de la reserva que se está cancelando
-  const [cancelandoId, setCancelandoId] =
-    useState(null);
+  const [cancelandoId, setCancelandoId] = useState(null);
 
-  // Estados visuales
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
-  const [mensajeExito, setMensajeExito] =
-    useState("");
+  const [mensajeExito, setMensajeExito] = useState("");
 
-  // -------------------------
-  // CARGAR DATOS DEL SISTEMA
-  // -------------------------
+  // ==========================================
+  // ESTADOS DE LOS FILTROS
+  // ==========================================
+
+  const [filtroPelicula, setFiltroPelicula] = useState("");
+  const [filtroFecha, setFiltroFecha] = useState("");
+
+  // ==========================================
+  // CARGAR DATOS
+  // ==========================================
 
   async function cargarCartelera() {
     try {
@@ -65,14 +67,17 @@ function App() {
     }
   }
 
-  // Se ejecuta cuando abre la aplicación
+  // ==========================================
+  // CARGAR INFORMACIÓN AL ABRIR LA APP
+  // ==========================================
+
   useEffect(() => {
     cargarCartelera();
   }, []);
 
-  // -------------------------
-  // SELECCIONAR UNA FUNCIÓN
-  // -------------------------
+  // ==========================================
+  // SELECCIONAR FUNCIÓN PARA RESERVAR
+  // ==========================================
 
   function manejarReservar(funcion) {
     setMensajeExito("");
@@ -80,9 +85,9 @@ function App() {
     setFuncionSeleccionada(funcion);
   }
 
-  // -------------------------
-  // RESERVA CREADA
-  // -------------------------
+  // ==========================================
+  // CUANDO SE CREA UNA RESERVA
+  // ==========================================
 
   async function manejarReservaCreada() {
     await cargarCartelera();
@@ -94,17 +99,17 @@ function App() {
     );
   }
 
-  // -------------------------
-  // CERRAR FORMULARIO
-  // -------------------------
+  // ==========================================
+  // CERRAR FORMULARIO DE RESERVA
+  // ==========================================
 
   function cerrarFormulario() {
     setFuncionSeleccionada(null);
   }
 
-  // -------------------------
+  // ==========================================
   // CANCELAR RESERVA
-  // -------------------------
+  // ==========================================
 
   async function manejarCancelarReserva(id) {
     const confirmar = window.confirm(
@@ -122,10 +127,10 @@ function App() {
 
       await cancelarReserva(id);
 
-      // Volvemos a consultar todo para actualizar:
-      // - historial
-      // - estado de reserva
-      // - entradas disponibles
+      // Actualizamos:
+      // - historial de reservas
+      // - disponibilidad de entradas
+      // - cartelera
       await cargarCartelera();
 
       setMensajeExito(
@@ -138,9 +143,38 @@ function App() {
     }
   }
 
-  // -------------------------
+  // ==========================================
+  // LIMPIAR FILTROS
+  // ==========================================
+
+  function limpiarFiltros() {
+    setFiltroPelicula("");
+    setFiltroFecha("");
+  }
+
+  // ==========================================
+  // CONVERTIR FECHA A FORMATO LOCAL YYYY-MM-DD
+  // ==========================================
+
+  function obtenerFechaLocal(fechaHora) {
+    const fecha = new Date(fechaHora);
+
+    const anio = fecha.getFullYear();
+
+    const mes = String(
+      fecha.getMonth() + 1
+    ).padStart(2, "0");
+
+    const dia = String(
+      fecha.getDate()
+    ).padStart(2, "0");
+
+    return `${anio}-${mes}-${dia}`;
+  }
+
+  // ==========================================
   // ESTADO DE CARGA
-  // -------------------------
+  // ==========================================
 
   if (cargando) {
     return (
@@ -150,17 +184,101 @@ function App() {
     );
   }
 
-  // -------------------------
-  // FILTRAR PELÍCULAS ACTIVAS
-  // -------------------------
+  // ==========================================
+  // PELÍCULAS ACTIVAS
+  // ==========================================
 
   const peliculasActivas = peliculas.filter(
     (pelicula) => pelicula.estado === "ACTIVA"
   );
 
+  // ==========================================
+  // FUNCIONES FILTRADAS
+  // ==========================================
+
+  const funcionesFiltradas = funciones.filter(
+    (funcion) => {
+      // Solo mostramos funciones programadas
+      if (funcion.estado !== "PROGRAMADA") {
+        return false;
+      }
+
+      // Solo mostramos funciones futuras
+      const fechaFuncionCompleta = new Date(
+        funcion.fechaHora
+      );
+
+      const ahora = new Date();
+
+      if (fechaFuncionCompleta <= ahora) {
+        return false;
+      }
+
+      // --------------------------------------
+      // FILTRO POR PELÍCULA
+      // --------------------------------------
+
+      if (
+        filtroPelicula &&
+        funcion.peliculaId !== Number(filtroPelicula)
+      ) {
+        return false;
+      }
+
+      // --------------------------------------
+      // FILTRO POR FECHA
+      // --------------------------------------
+
+      if (filtroFecha) {
+        const fechaFuncion = obtenerFechaLocal(
+          funcion.fechaHora
+        );
+
+        if (fechaFuncion !== filtroFecha) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+  );
+
+  // ==========================================
+  // PELÍCULAS QUE DEBEN MOSTRARSE
+  // ==========================================
+
+  const peliculasFiltradas = peliculasActivas.filter(
+    (pelicula) => {
+      // Si seleccionamos una película específica,
+      // ocultamos las demás.
+
+      if (
+        filtroPelicula &&
+        pelicula.id !== Number(filtroPelicula)
+      ) {
+        return false;
+      }
+
+      // La película debe tener al menos una
+      // función disponible después de aplicar
+      // los filtros.
+
+      return funcionesFiltradas.some(
+        (funcion) =>
+          funcion.peliculaId === pelicula.id
+      );
+    }
+  );
+
+  // ==========================================
+  // INTERFAZ
+  // ==========================================
+
   return (
     <main className="contenedor">
-      {/* ENCABEZADO */}
+      {/* ======================================
+          ENCABEZADO
+      ====================================== */}
 
       <header className="encabezado">
         <h1>Cartelera</h1>
@@ -171,7 +289,9 @@ function App() {
         </p>
       </header>
 
-      {/* MENSAJES */}
+      {/* ======================================
+          MENSAJES
+      ====================================== */}
 
       {error && (
         <p className="mensaje-error">
@@ -185,39 +305,115 @@ function App() {
         </p>
       )}
 
-      {/* CARTELERA */}
+      {/* ======================================
+          FILTROS
+      ====================================== */}
 
-      {peliculasActivas.length === 0 ? (
-        <p>No hay películas activas.</p>
+      <section className="filtros">
+        <h2>Buscar funciones</h2>
+
+        <div className="filtros-contenido">
+          {/* FILTRO POR PELÍCULA */}
+
+          <label>
+            Película
+
+            <select
+              value={filtroPelicula}
+              onChange={(evento) =>
+                setFiltroPelicula(
+                  evento.target.value
+                )
+              }
+            >
+              <option value="">
+                Todas las películas
+              </option>
+
+              {peliculasActivas.map(
+                (pelicula) => (
+                  <option
+                    key={pelicula.id}
+                    value={pelicula.id}
+                  >
+                    {pelicula.titulo}
+                  </option>
+                )
+              )}
+            </select>
+          </label>
+
+          {/* FILTRO POR FECHA */}
+
+          <label>
+            Fecha
+
+            <input
+              type="date"
+              value={filtroFecha}
+              onChange={(evento) =>
+                setFiltroFecha(
+                  evento.target.value
+                )
+              }
+            />
+          </label>
+
+          {/* BOTÓN LIMPIAR */}
+
+          <button
+            type="button"
+            onClick={limpiarFiltros}
+          >
+            Limpiar filtros
+          </button>
+        </div>
+      </section>
+
+      {/* ======================================
+          CARTELERA
+      ====================================== */}
+
+      {peliculasFiltradas.length === 0 ? (
+        <p>
+          No hay funciones disponibles con los
+          filtros seleccionados.
+        </p>
       ) : (
         <section className="peliculas-grid">
-          {peliculasActivas.map((pelicula) => {
-            // Seleccionamos únicamente las funciones
-            // correspondientes a esta película.
-            const funcionesPelicula =
-              funciones.filter(
-                (funcion) =>
-                  funcion.peliculaId ===
-                    pelicula.id &&
-                  funcion.estado ===
-                    "PROGRAMADA" &&
-                  new Date(funcion.fechaHora) >
-                    new Date()
-              );
+          {peliculasFiltradas.map(
+            (pelicula) => {
+              // Obtenemos únicamente las
+              // funciones correspondientes
+              // a esta película.
 
-            return (
-              <PeliculaCard
-                key={pelicula.id}
-                pelicula={pelicula}
-                funciones={funcionesPelicula}
-                onReservar={manejarReservar}
-              />
-            );
-          })}
+              const funcionesPelicula =
+                funcionesFiltradas.filter(
+                  (funcion) =>
+                    funcion.peliculaId ===
+                    pelicula.id
+                );
+
+              return (
+                <PeliculaCard
+                  key={pelicula.id}
+                  pelicula={pelicula}
+                  funciones={
+                    funcionesPelicula
+                  }
+                  onReservar={
+                    manejarReservar
+                  }
+                />
+              );
+            }
+          )}
         </section>
       )}
 
-      {/* FORMULARIO DE RESERVA */}
+      {/* ======================================
+          FORMULARIO DE RESERVA
+      ====================================== */}
 
       {funcionSeleccionada && (
         <ReservaForm
@@ -229,11 +425,15 @@ function App() {
         />
       )}
 
-      {/* HISTORIAL DE RESERVAS */}
+      {/* ======================================
+          HISTORIAL DE RESERVAS
+      ====================================== */}
 
       <ReservasLista
         reservas={reservas}
-        onCancelar={manejarCancelarReserva}
+        onCancelar={
+          manejarCancelarReserva
+        }
         cancelandoId={cancelandoId}
       />
     </main>
