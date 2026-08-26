@@ -1,26 +1,57 @@
-# Dependencias
+# ==========================================
+# DEPENDENCIAS
+# ==========================================
+
 **/node_modules/
 
-# Variables de entorno
-**/.env
-**/.env.*
 
-# Builds
+# ==========================================
+# VARIABLES DE ENTORNO
+# ==========================================
+
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Los archivos de ejemplo SÍ deben subirse
+!**/.env.example
+
+
+# ==========================================
+# BUILDS
+# ==========================================
+
 **/dist/
 
-# Base de datos SQLite local
+
+# ==========================================
+# SQLITE
+# ==========================================
+
 **/dev.db
 **/*.db-journal
 
-# Prisma Client generado
+
+# ==========================================
+# PRISMA CLIENT GENERADO
+# ==========================================
+
 backend/generated/
 
-# Archivos generados por herramientas/asistentes
+
+# ==========================================
+# ARCHIVOS GENERADOS POR HERRAMIENTAS
+# ==========================================
+
 **/.agents/
 **/.claude/
 **/.windsurf/
 **/skills-lock.json
 
-# Sistema operativo
+
+# ==========================================
+# SISTEMA OPERATIVO
+# ==========================================
+
 .DS_Store
 Thumbs.db

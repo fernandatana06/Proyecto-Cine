@@ -14,7 +14,6 @@ app.use(express.json());
 
 const PORT = 3000;
 
-app.use(express.json());
 
 app.get("/", (req, res) => {
     res.json({
@@ -148,6 +147,12 @@ app.post("/api/salas", async (req, res) => {
         res.status(201).json(sala);
     } catch (error) {
         console.error("Error al registrar sala:", error);
+
+        if (error.code === "P2002") {
+            return res.status(409).json({
+                error: "Ya existe una sala con ese nombre",
+            });
+        }
 
         res.status(500).json({
             error: "No se pudo registrar la sala",
@@ -383,6 +388,17 @@ app.post("/api/reservas", async (req, res) => {
             });
         }
 
+        const emailLimpio = email.trim().toLowerCase();
+
+        const formatoEmail =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!formatoEmail.test(emailLimpio)) {
+            return res.status(400).json({
+                error: "El correo electrónico no es válido",
+            });
+        }
+
         // -------------------------
         // 2. Validar función
         // -------------------------
@@ -437,9 +453,9 @@ app.post("/api/reservas", async (req, res) => {
         // 5. Verificar estado
         // -------------------------
 
-        if (funcion.estado === "CANCELADA") {
+        if (funcion.estado !== "PROGRAMADA") {
             return res.status(400).json({
-                error: "No se puede reservar una función cancelada",
+                error: "La función no está disponible para reservas",
             });
         }
 
@@ -490,16 +506,16 @@ app.post("/api/reservas", async (req, res) => {
 
         const cliente = await prisma.cliente.upsert({
             where: {
-                email: email.trim().toLowerCase(),
+                email: emailLimpio,
             },
-
+        
             update: {
                 nombre: nombre.trim(),
             },
-
+        
             create: {
                 nombre: nombre.trim(),
-                email: email.trim().toLowerCase(),
+                email: emailLimpio,
             },
         });
 

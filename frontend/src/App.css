@@ -1,48 +1,298 @@
-#root {
-  min-height: 100vh;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  color: #222;
-}
+/* ==========================================
+   CONTENEDOR GENERAL
+========================================== */
 
 .contenedor {
-  width: min(1200px, 92%);
+  width: min(1280px, 92%);
   margin: 0 auto;
-  padding: 32px 0;
+  padding: 40px 0 80px;
 }
+
+
+/* ==========================================
+   ENCABEZADO
+========================================== */
 
 .encabezado {
-  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+
+  min-height: 360px;
+
+  display: flex;
+  align-items: flex-end;
+
+  padding: 55px 45px;
+  margin-bottom: 28px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(9, 13, 22, 0.96) 0%,
+      rgba(9, 13, 22, 0.72) 48%,
+      rgba(9, 13, 22, 0.18) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(9, 13, 22, 0.95) 0%,
+      rgba(9, 13, 22, 0.05) 65%
+    ),
+    url("./assets/hero.png");
+
+  background-size: cover;
+  background-position: center;
+
+  box-shadow:
+    0 22px 50px rgba(0, 0, 0, 0.4);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
 }
 
-.encabezado h1 {
-  margin-bottom: 8px;
+.encabezado > div {
+  position: relative;
+  z-index: 2;
+
+  max-width: 680px;
 }
+
+.encabezado h2 {
+  margin: 0 0 14px;
+
+  font-size: clamp(2.3rem, 5vw, 4rem);
+
+  line-height: 1;
+
+  letter-spacing: -2px;
+
+  text-shadow:
+    0 3px 20px rgba(0, 0, 0, 0.6);
+}
+
+.encabezado p {
+  margin: 0;
+
+  max-width: 600px;
+
+  color: #d1d5db;
+
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.sobrelinea {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #f87171;
+
+  font-size: 0.75rem;
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.mensaje-error,
+.mensaje-exito {
+  padding: 15px 18px;
+  margin: 20px 0;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+}
+
+.mensaje-error {
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.5);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+.mensaje-exito {
+  color: #bbf7d0;
+  background: rgba(20, 83, 45, 0.55);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+}
+
+
+/* ==========================================
+   FILTROS
+========================================== */
+
+.filtros {
+  margin-bottom: 35px;
+  padding: 25px;
+
+  border-radius: 18px;
+
+  background: rgba(31, 41, 55, 0.82);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.filtros h2 {
+  margin: 0 0 20px;
+
+  font-size: 1.35rem;
+}
+
+.filtros-contenido {
+  display: grid;
+
+  grid-template-columns:
+    minmax(200px, 1fr)
+    minmax(190px, 0.7fr)
+    auto;
+
+  gap: 18px;
+
+  align-items: end;
+}
+
+.filtros label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  color: #d1d5db;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.filtros select,
+.filtros input {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #4b5563;
+  border-radius: 10px;
+
+  background: #111827;
+  color: #f9fafb;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.filtros select:hover,
+.filtros input:hover {
+  border-color: #6b7280;
+}
+
+.filtros select:focus,
+.filtros input:focus {
+  border-color: #ef4444;
+
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.15);
+
+  outline: none;
+}
+
+.filtros button {
+  min-height: 44px;
+
+  padding: 11px 20px;
+
+  border-radius: 10px;
+
+  background: #374151;
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.filtros button:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+
+/* ==========================================
+   CARTELERA
+========================================== */
 
 .peliculas-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 26px;
 }
 
+
+/* ==========================================
+   TARJETA DE PELÍCULA
+========================================== */
+
 .pelicula-card {
-  background: white;
-  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  border-radius: 20px;
+
+  background: #151c29;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.32);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
+
+.pelicula-card:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(239, 68, 68, 0.35);
+
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.42);
+}
+
+
+/* ==========================================
+   IMAGEN PELÍCULA
+========================================== */
 
 .pelicula-imagen,
 .pelicula-sin-imagen {
   width: 100%;
-  height: 240px;
+  height: 360px;
 }
 
 .pelicula-imagen {
+  display: block;
   object-fit: cover;
 }
 
@@ -50,102 +300,1400 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ddd;
+
+  background:
+    linear-gradient(
+      135deg,
+      #374151,
+      #111827
+    );
+
+  color: #9ca3af;
+
+  font-weight: 600;
 }
 
+
+/* ==========================================
+   CONTENIDO PELÍCULA
+========================================== */
+
 .pelicula-contenido {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  padding: 22px;
 }
 
 .pelicula-contenido h2 {
-  margin-top: 0;
+  margin: 0 0 15px;
+
+  color: #ffffff;
+
+  font-size: 1.5rem;
+  line-height: 1.2;
 }
+
+.pelicula-contenido h3 {
+  margin: 22px 0 12px;
+
+  font-size: 1rem;
+  color: #f3f4f6;
+}
+
+.pelicula-contenido > p {
+  margin: 5px 0;
+
+  color: #cbd5e1;
+
+  line-height: 1.5;
+}
+
+.pelicula-contenido strong {
+  color: #f9fafb;
+}
+
+
+/* ==========================================
+   FUNCIONES
+========================================== */
 
 .funciones-lista {
   display: flex;
   flex-direction: column;
+
   gap: 12px;
 }
 
 .funcion-item {
-  padding: 12px;
-  background: #f5f5f5;
-  border-radius: 6px;
+  padding: 15px;
+
+  border-radius: 12px;
+
+  background: rgba(17, 24, 39, 0.85);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .funcion-item p {
-  margin: 5px 0;
+  margin: 6px 0;
+
+  color: #cbd5e1;
+
+  font-size: 0.92rem;
 }
 
-@media (max-width: 900px) {
-  .peliculas-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.funcion-item strong {
+  color: #f3f4f6;
 }
 
-@media (max-width: 600px) {
-  .peliculas-grid {
-    grid-template-columns: 1fr;
-  }
+.funcion-item button {
+  width: 100%;
+
+  margin-top: 12px;
+  padding: 11px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #991b1b
+    );
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s,
+    filter 0.2s;
 }
+
+.funcion-item button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.12);
+}
+
+.funcion-item button:disabled {
+  background: #374151;
+  color: #9ca3af;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   FORMULARIO DE RESERVA
+========================================== */
+
+.reserva-formulario {
+  position: relative;
+
+  max-width: 600px;
+
+  margin: 35px auto;
+  padding: 30px;
+
+  border-radius: 20px;
+
+  background: #1f2937;
+
+  border: 1px solid rgba(239, 68, 68, 0.3);
+
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.45);
+}
+
+.reserva-formulario h3 {
+  margin-top: 0;
+
+  font-size: 1.6rem;
+}
+
+.reserva-formulario > p {
+  color: #d1d5db;
+}
+
+.reserva-formulario form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  margin-top: 20px;
+}
+
+.reserva-formulario label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  font-size: 0.92rem;
+  font-weight: 600;
+
+  color: #e5e7eb;
+}
+
+.reserva-formulario input {
+  padding: 12px 14px;
+
+  border-radius: 10px;
+
+  border: 1px solid #4b5563;
+
+  background: #111827;
+  color: #f9fafb;
+}
+
+.reserva-formulario input:focus {
+  border-color: #ef4444;
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+
+/* ==========================================
+   ACCIONES DE RESERVA
+========================================== */
+
+.acciones-reserva {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 8px;
+}
+
+.acciones-reserva button {
+  flex: 1;
+
+  padding: 12px 15px;
+
+  border-radius: 10px;
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.acciones-reserva button:first-child {
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #991b1b
+    );
+}
+
+.acciones-reserva button:last-child {
+  background: #4b5563;
+}
+
+.acciones-reserva button:hover {
+  filter: brightness(1.12);
+}
+
+
+/* ==========================================
+   HISTORIAL DE RESERVAS
+========================================== */
+
+.reservas-seccion {
+  margin-top: 55px;
+}
+
+.reservas-seccion > h2 {
+  margin-bottom: 22px;
+
+  font-size: 1.8rem;
+}
+
+.reservas-lista {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.reserva-card {
+  padding: 22px;
+
+  border-radius: 16px;
+
+  background: rgba(31, 41, 55, 0.88);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.reserva-card h3 {
+  margin: 0 0 15px;
+
+  color: #ffffff;
+}
+
+.reserva-card p {
+  margin: 8px 0;
+
+  color: #cbd5e1;
+
+  font-size: 0.93rem;
+}
+
+.reserva-card strong {
+  color: #ffffff;
+}
+
+.reserva-card button {
+  width: 100%;
+
+  margin-top: 16px;
+  padding: 11px;
+
+  border-radius: 10px;
+
+  background: #dc2626;
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.reserva-card button:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.reserva-card button:disabled {
+  background: #4b5563;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   PANEL ADMINISTRACIÓN
+========================================== */
 
 .panel-administracion {
-  margin-top: 50px;
-  padding-top: 30px;
-  border-top: 1px solid #ddd;
+  margin-top: 65px;
+  padding-top: 40px;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.1);
+}
+
+.panel-administracion > h2 {
+  margin: 0 0 8px;
+
+  font-size: 2rem;
+}
+
+.panel-administracion > p {
+  margin-top: 0;
+  margin-bottom: 25px;
+
+  color: #9ca3af;
 }
 
 .administracion-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
   gap: 24px;
-  margin-top: 20px;
 }
 
 .admin-card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+
+  border-radius: 18px;
+
+  background: rgba(31, 41, 55, 0.88);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.25);
 }
 
 .admin-card h3 {
-  margin-top: 0;
+  margin: 0 0 22px;
+
+  font-size: 1.3rem;
 }
 
 .admin-card form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+
+  gap: 16px;
 }
 
 .admin-card label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-weight: bold;
+
+  gap: 7px;
+
+  color: #d1d5db;
+
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .admin-card input,
 .admin-card select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font: inherit;
+  width: 100%;
+
+  padding: 11px 13px;
+
+  border: 1px solid #4b5563;
+  border-radius: 9px;
+
+  background: #111827;
+  color: #f9fafb;
+}
+
+.admin-card input:focus,
+.admin-card select:focus {
+  border-color: #ef4444;
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.15);
 }
 
 .admin-card button {
-  padding: 10px 15px;
+  margin-top: 5px;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #991b1b
+    );
+
+  color: white;
+
+  font-weight: 700;
+
   cursor: pointer;
+
+  transition:
+    transform 0.2s,
+    filter 0.2s;
+}
+
+.admin-card button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.12);
 }
 
 .admin-card button:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
-  opacity: 0.6;
 }
 
-@media (max-width: 900px) {
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b101a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+
+/* ==========================================
+   RESPONSIVE - TABLET
+========================================== */
+
+@media (max-width: 1000px) {
+  .peliculas-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .reservas-lista {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
   .administracion-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================
+   RESPONSIVE - MÓVIL
+========================================== */
+
+@media (max-width: 700px) {
+  .contenedor {
+    width: min(94%, 600px);
+    padding-top: 20px;
+  }
+
+  .encabezado {
+    padding: 35px 25px;
+    border-radius: 18px;
+  }
+
+  .encabezado::after {
+    right: 20px;
+    font-size: 75px;
+  }
+
+  .encabezado h1 {
+    font-size: 2.4rem;
+  }
+
+  .filtros-contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .peliculas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pelicula-imagen,
+  .pelicula-sin-imagen {
+    height: 420px;
+  }
+
+  .reservas-lista {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones-reserva {
+    flex-direction: column;
+  }
+}
+
+
+/* ==========================================
+   MÓVILES PEQUEÑOS
+========================================== */
+
+@media (max-width: 420px) {
+  .encabezado {
+    padding: 30px 20px;
+  }
+
+  .encabezado::after {
+    display: none;
+  }
+
+  .pelicula-imagen,
+  .pelicula-sin-imagen {
+    height: 340px;
+  }
+
+  .pelicula-contenido,
+  .admin-card,
+  .reserva-card,
+  .reserva-formulario {
+    padding: 18px;
+  }
+}
+
+/* ==========================================
+   CABECERA DE LA APLICACIÓN
+========================================== */
+
+.cabecera-app {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  background: rgba(9, 13, 22, 0.92);
+  backdrop-filter: blur(16px);
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cabecera-contenido {
+  width: min(1280px, 92%);
+  min-height: 76px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.marca-icono {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  background: #dc2626;
+
+  font-size: 1.25rem;
+}
+
+.marca h1 {
+  margin: 0;
+
+  font-size: 1.15rem;
+}
+
+.marca p {
+  margin: 2px 0 0;
+
+  color: #9ca3af;
+
+  font-size: 0.78rem;
+}
+
+
+/* ==========================================
+   NAVEGACIÓN
+========================================== */
+
+.nav-principal {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.nav-boton {
+  position: relative;
+
+  padding: 10px 15px;
+
+  border-radius: 9px;
+
+  background: transparent;
+  color: #9ca3af;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.nav-boton:hover {
+  color: white;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+}
+
+.nav-boton.activo {
+  color: white;
+
+  background:
+    rgba(220, 38, 38, 0.18);
+}
+
+.nav-boton.activo::after {
+  content: "";
+
+  position: absolute;
+
+  left: 15px;
+  right: 15px;
+  bottom: 3px;
+
+  height: 2px;
+
+  border-radius: 5px;
+
+  background: #ef4444;
+}
+
+.nav-contador {
+  display: inline-flex;
+
+  min-width: 20px;
+  height: 20px;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 7px;
+  padding: 0 6px;
+
+  border-radius: 20px;
+
+  background: #dc2626;
+
+  color: white;
+
+  font-size: 0.7rem;
+}
+
+
+/* ==========================================
+   VISTAS
+========================================== */
+
+.vista-seccion {
+  animation: aparecer 0.25s ease;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ==========================================
+   ENCABEZADO DE CARTELERA
+========================================== */
+
+.sobrelinea {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #ef4444;
+
+  font-size: 0.75rem;
+  font-weight: 800;
+
+  letter-spacing: 1.6px;
+}
+
+.encabezado h2 {
+  max-width: 700px;
+
+  margin: 0 0 12px;
+
+  font-size:
+    clamp(2rem, 5vw, 3.6rem);
+
+  line-height: 1.05;
+
+  letter-spacing: -1.5px;
+}
+
+
+/* ==========================================
+   RESUMEN
+========================================== */
+
+.resumen-cartelera {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 16px;
+
+  margin-bottom: 26px;
+}
+
+.resumen-cartelera article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(31, 41, 55, 0.7);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+}
+
+.resumen-cartelera span {
+  color: #9ca3af;
+
+  font-size: 0.9rem;
+}
+
+.resumen-cartelera strong {
+  font-size: 1.7rem;
+
+  color: white;
+}
+
+
+/* ==========================================
+   TÍTULOS DE SECCIÓN
+========================================== */
+
+.titulo-seccion,
+.titulo-pagina {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin: 35px 0 22px;
+}
+
+.titulo-seccion h2,
+.titulo-pagina h2 {
+  margin: 0;
+
+  font-size: 2rem;
+}
+
+.titulo-seccion p,
+.titulo-pagina p {
+  margin: 7px 0 0;
+
+  color: #9ca3af;
+}
+
+.titulo-seccion > span {
+  color: #9ca3af;
+
+  font-size: 0.9rem;
+}
+
+
+/* ==========================================
+   BOTÓN SECUNDARIO
+========================================== */
+
+.boton-secundario {
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  background: #dc2626;
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.boton-secundario:hover {
+  background: #b91c1c;
+}
+
+
+/* ==========================================
+   ESTADO VACÍO
+========================================== */
+
+.estado-vacio {
+  padding: 60px 30px;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+  background:
+    rgba(31, 41, 55, 0.65);
+
+  border:
+    1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.estado-vacio > span {
+  display: block;
+
+  font-size: 3rem;
+
+  margin-bottom: 15px;
+}
+
+.estado-vacio h3 {
+  margin: 0 0 8px;
+}
+
+.estado-vacio p {
+  margin-bottom: 20px;
+
+  color: #9ca3af;
+}
+
+.estado-vacio button {
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  background: #dc2626;
+  color: white;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   MODAL DE RESERVA
+========================================== */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  overflow-y: auto;
+
+  background:
+    rgba(0, 0, 0, 0.76);
+
+  backdrop-filter: blur(7px);
+}
+
+.modal-contenido {
+  position: relative;
+
+  width: min(600px, 100%);
+}
+
+.modal-contenido .reserva-formulario {
+  width: 100%;
+
+  margin: 0;
+}
+
+.modal-cerrar {
+  position: absolute;
+
+  top: 12px;
+  right: 14px;
+
+  z-index: 2;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color: white;
+
+  font-size: 1.5rem;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.modal-cerrar:hover {
+  background:
+    rgba(255, 255, 255, 0.15);
+}
+
+
+/* ==========================================
+   PANTALLA DE CARGA
+========================================== */
+
+.pantalla-carga {
+  min-height: 500px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+
+  color: #d1d5db;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+
+  border: 4px solid
+    rgba(255, 255, 255, 0.15);
+
+  border-top-color: #ef4444;
+
+  border-radius: 50%;
+
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ==========================================
+   AJUSTE PANEL ADMINISTRACIÓN
+========================================== */
+
+.vista-seccion
+.panel-administracion {
+  margin-top: 10px;
+  padding-top: 0;
+
+  border-top: none;
+}
+
+
+/* ==========================================
+   MÓVIL
+========================================== */
+
+@media (max-width: 760px) {
+  .cabecera-contenido {
+    padding: 12px 0;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+  }
+
+  .marca {
+    justify-content: center;
+  }
+
+  .nav-principal {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+  .nav-boton {
+    padding: 10px 7px;
+
+    font-size: 0.82rem;
+  }
+
+  .resumen-cartelera {
+    grid-template-columns: 1fr;
+  }
+
+  .titulo-seccion,
+  .titulo-pagina {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}
+
+/* ==========================================
+   TARJETA NUEVA DE PELÍCULA
+========================================== */
+
+.pelicula-imagen-contenedor {
+  position: relative;
+  overflow: hidden;
+}
+
+.pelicula-imagen {
+  width: 100%;
+  height: 420px;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.45s ease;
+}
+
+.pelicula-card:hover
+.pelicula-imagen {
+  transform: scale(1.05);
+}
+
+.pelicula-clasificacion {
+  position: absolute;
+
+  top: 14px;
+  right: 14px;
+
+  padding: 6px 10px;
+
+  border-radius: 7px;
+
+  background:
+    rgba(0, 0, 0, 0.72);
+
+  color: white;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  backdrop-filter: blur(6px);
+}
+
+.pelicula-info-principal h2 {
+  margin-bottom: 5px;
+}
+
+.pelicula-genero {
+  margin: 0;
+
+  color: #9ca3af;
+}
+
+.pelicula-datos {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 13px;
+
+  color: #9ca3af;
+
+  font-size: 0.88rem;
+}
+
+.pelicula-disponibilidad {
+  margin-top: 18px;
+
+  font-size: 0.9rem;
+
+  color: #d1d5db;
+}
+
+.sin-funciones {
+  color: #6b7280;
+}
+
+.boton-ver-funciones {
+  width: 100%;
+
+  margin-top: 18px;
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #991b1b
+    );
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.boton-ver-funciones:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+.boton-ver-funciones:disabled {
+  background: #374151;
+
+  color: #9ca3af;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   MODAL PELÍCULA
+========================================== */
+
+.modal-pelicula {
+  position: relative;
+
+  width: min(900px, 100%);
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  padding: 28px;
+
+  border-radius: 22px;
+
+  background: #151c29;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.1);
+
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.55);
+}
+
+.modal-pelicula-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(230px, 0.75fr)
+    minmax(0, 1.4fr);
+
+  gap: 32px;
+}
+
+.modal-poster img,
+.modal-poster
+.pelicula-sin-imagen {
+  width: 100%;
+  height: 430px;
+
+  object-fit: cover;
+
+  border-radius: 16px;
+}
+
+.modal-pelicula-info {
+  min-width: 0;
+
+  padding-top: 15px;
+}
+
+.modal-pelicula-info h2 {
+  margin: 0;
+
+  font-size: 2.4rem;
+  line-height: 1.05;
+}
+
+.modal-meta {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
+.modal-meta span {
+  padding: 6px 10px;
+
+  border-radius: 7px;
+
+  background: #1f2937;
+
+  color: #d1d5db;
+
+  font-size: 0.85rem;
+}
+
+.modal-pelicula-info h3 {
+  margin: 30px 0 15px;
+}
+
+.modal-funciones {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.modal-funcion {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr auto;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
+  background: #111827;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+}
+
+.modal-funcion > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.modal-funcion span {
+  color: #9ca3af;
+
+  font-size: 0.85rem;
+}
+
+.modal-funcion strong {
+  color: white;
+}
+
+.entradas-disponibles {
+  color: #86efac !important;
+}
+
+.modal-funcion button {
+  padding: 10px 15px;
+
+  border-radius: 9px;
+
+  background: #dc2626;
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.modal-funcion button:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.modal-funcion button:disabled {
+  background: #374151;
+
+  color: #9ca3af;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   RESPONSIVE MODAL
+========================================== */
+
+@media (max-width: 760px) {
+  .modal-pelicula {
+    padding: 20px;
+  }
+
+  .modal-pelicula-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-poster {
+    max-width: 300px;
+
+    margin: 0 auto;
+  }
+
+  .modal-poster img,
+  .modal-poster
+  .pelicula-sin-imagen {
+    height: 420px;
+  }
+
+  .modal-pelicula-info h2 {
+    font-size: 2rem;
+  }
+
+  .modal-funcion {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-funcion button {
+    width: 100%;
   }
 }

@@ -33,6 +33,7 @@ async function main() {
       duracion: 169,
       clasificacion: "PG-13",
       estado: "ACTIVA",
+      imagenUrl: "https://image.tmdb.org/t/p/original/djS3XxneEFjCM6VlCiuuN8QavE6.jpg",
     },
   });
 
@@ -43,6 +44,7 @@ async function main() {
       duracion: 96,
       clasificacion: "PG",
       estado: "ACTIVA",
+      imagenUrl: "https://i.pinimg.com/originals/8a/e2/10/8ae21078ece0c8a9dbc0d37982adbfec.jpg",
     },
   });
 
@@ -53,6 +55,7 @@ async function main() {
       duracion: 176,
       clasificacion: "PG-13",
       estado: "ACTIVA",
+      imagenUrl: "https://4.bp.blogspot.com/-XgiNVClf0R4/VHE0EuyY0aI/AAAAAAAAAVU/Udwg3RKUOn4/s1600/BATMAN-EL-CABALLERO-DE-LA-NOCHE.jpg",
     },
   });
 
